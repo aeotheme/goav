@@ -1,4 +1,4 @@
-package main
+package exam
 
 import (
 	"fmt"
@@ -131,7 +131,7 @@ func dumpFrames(file string) {
 	}()
 
 	// Determine required buffer size and allocate buffer
-	numBytes := uint(avutil.AvPictureGetBufferSize((avutil.PixelFormat)(avcodec.AV_PIX_FMT_RGB24),
+	numBytes := uintptr(avutil.AvPictureGetBufferSize((avutil.PixelFormat)(avcodec.AV_PIX_FMT_RGB24),
 		pCodecCtx.Width(), pCodecCtx.Height(), 1))
 	if numBytes <= 0 {
 		fmt.Println("unexpect size", numBytes)
