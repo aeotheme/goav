@@ -3,11 +3,9 @@
 
 package avutil
 
-/*
-	#cgo pkg-config: libavutil
-	#include <libavutil/frame.h>
-	#include <stdlib.h>
-*/
+//#cgo pkg-config: libavutil
+//#include <libavutil/frame.h>
+//#include <stdlib.h>
 import "C"
 import (
 	"fmt"
@@ -27,14 +25,6 @@ type (
 
 func AvprivFrameGetMetadatap(f *Frame) *Dictionary {
 	return (*Dictionary)(unsafe.Pointer(f.metadata))
-}
-
-func AvFrameSetQpTable(f *Frame, b *AvBufferRef, s, q int) int {
-	return int(C.av_frame_set_qp_table((*C.struct_AVFrame)(unsafe.Pointer(f)), (*C.struct_AVBufferRef)(unsafe.Pointer(b)), C.int(s), C.int(q)))
-}
-
-func AvFrameGetQpTable(f *Frame, s, t *int) int8 {
-	return int8(*C.av_frame_get_qp_table((*C.struct_AVFrame)(unsafe.Pointer(f)), (*C.int)(unsafe.Pointer(s)), (*C.int)(unsafe.Pointer(t))))
 }
 
 //Allocate an Frame and set its fields to default values.
@@ -102,16 +92,30 @@ func AvFrameGetSideData(f *Frame, t AvFrameSideDataType) *AvFrameSideData {
 	return (*AvFrameSideData)(C.av_frame_get_side_data((*C.struct_AVFrame)(unsafe.Pointer(f)), (C.enum_AVFrameSideDataType)(t)))
 }
 
+func DataPoint(f *Frame) (data uintptr) {
+	f0 := (*C.struct_AVFrame)(unsafe.Pointer(f))
+	cDst := (**C.uint8_t)(unsafe.Pointer(&f0.data[0]))
+	return uintptr(unsafe.Pointer(cDst))
+}
+
+func LineSizePoint(f *Frame) (lineSize uintptr) {
+	f0 := (*C.struct_AVFrame)(unsafe.Pointer(f))
+	cDstLineSize := (*C.int)(unsafe.Pointer(&f0.linesize[0]))
+	return uintptr(unsafe.Pointer(cDstLineSize))
+}
+
 func Data(f *Frame) (data [8]*uint8) {
+	f0 := (*C.struct_AVFrame)(unsafe.Pointer(f))
 	for i := range data {
-		data[i] = (*uint8)(f.data[i])
+		data[i] = (*uint8)(f0.data[i])
 	}
 	return
 }
 
-func Linesize(f *Frame) (linesize [8]int32) {
-	for i := range linesize {
-		linesize[i] = int32(f.linesize[i])
+func LineSize(f *Frame) (lineSize [8]int32) {
+	f0 := (*C.struct_AVFrame)(unsafe.Pointer(f))
+	for i := range lineSize {
+		lineSize[i] = int32(f0.linesize[i])
 	}
 	return
 }
@@ -148,7 +152,7 @@ func GetPicture(f *Frame) (img *image.YCbCr, err error) {
 // SetPicture sets the image pointer of |f| to the image pointers of |img|
 func SetPicture(f *Frame, img *image.YCbCr) {
 	d := Data(f)
-	// l := Linesize(f)
+	// l := LineSize(f)
 	// FIXME: Save the original pointers somewhere, this is a memory leak
 	d[0] = (*uint8)(unsafe.Pointer(&img.Y[0]))
 	// d[1] = (*uint8)(unsafe.Pointer(&img.Cb[0]))
@@ -187,7 +191,7 @@ func AvFrameGetInfo(f *Frame) (width int, height int, linesize [8]int32, data [8
 	for i := range data {
 		data[i] = (*uint8)(f.data[i])
 	}
-	// log.Println("Linesize is ", f.linesize, "Data is", data)
+	// log.Println("LineSize is ", f.linesize, "Data is", data)
 	return
 }
 

@@ -3,24 +3,24 @@
 
 //Package avcodec contains the codecs (decoders and encoders) provided by the libavcodec library
 //Provides some generic global options, which can be set on all the encoders and decoders.
-package avcodec
+package avutil
 
-//#cgo pkg-config: libavformat libavcodec libavutil
+//#cgo pkg-config: libavutil
 //#include <stdio.h>
 //#include <stdlib.h>
 //#include <inttypes.h>
 //#include <stdint.h>
 //#include <string.h>
-//#include <libavformat/avformat.h>
-//#include <libavcodec/avcodec.h>
 //#include <libavutil/avutil.h>
 import "C"
 import "fmt"
 
+// Numerator
 func (r Rational) Num() int {
 	return int(r.num)
 }
 
+// Denominator
 func (r Rational) Den() int {
 	return int(r.den)
 }

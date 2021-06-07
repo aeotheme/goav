@@ -16,10 +16,10 @@ package avformat
 //#include <libavcodec/avcodec.h>
 import "C"
 import (
+	"github.com/aeotheme/goav/avcodec"
+	"github.com/aeotheme/goav/avutil"
 	"reflect"
 	"unsafe"
-
-	"github.com/giorgisio/goav/avcodec"
 )
 
 func (cctxt *CodecContext) Type() MediaType {
@@ -46,11 +46,11 @@ func (cctxt *CodecContext) SetCodecType(ctype MediaType) {
 	cctxt.codec_type = C.enum_AVMediaType(ctype)
 }
 
-func (cctxt *CodecContext) GetTimeBase() avcodec.Rational {
+func (cctxt *CodecContext) GetTimeBase() avutil.Rational {
 	return newRational(cctxt.time_base)
 }
 
-func (cctxt *CodecContext) SetTimeBase(timeBase avcodec.Rational) {
+func (cctxt *CodecContext) SetTimeBase(timeBase avutil.Rational) {
 	cctxt.time_base.num = C.int(timeBase.Num())
 	cctxt.time_base.den = C.int(timeBase.Den())
 }

@@ -3,42 +3,7 @@ Golang binding for FFmpeg
 
 A comprehensive binding to the ffmpeg video/audio manipulation library.
 
-[![GoDoc](https://godoc.org/github.com/giorgisio/goav?status.svg)](https://godoc.org/github.com/giorgisio/goav)
-
-## Usage
-
-`````go
-
-import "github.com/giorgisio/goav/avformat"
-
-func main() {
-
-	filename := "sample.mp4"
-
-	// Register all formats and codecs
-	avformat.AvRegisterAll()
-
-	ctx := avformat.AvformatAllocContext()
-
-	// Open video file
-	if avformat.AvformatOpenInput(&ctx, filename, nil, nil) != 0 {
-		log.Println("Error: Couldn't open file.")
-		return
-	}
-
-	// Retrieve stream information
-	if ctx.AvformatFindStreamInfo(nil) < 0 {
-		log.Println("Error: Couldn't find stream information.")
-
-		// Close input file and free context
-		ctx.AvformatCloseInput()
-		return
-	}
-
-	//...
-
-}
-`````
+Forked from https://github.com/giorgisio/goav
 
 ## Libraries
 
@@ -50,32 +15,6 @@ func main() {
 * `swresample` corresponds to the ffmpeg library: libswresample [implements audio mixing and resampling routines]
 * `swscale` corresponds to the ffmpeg library: libswscale [implements color conversion and scaling routines]
 
-
-## Installation
-
-[FFMPEG INSTALL INSTRUCTIONS](https://github.com/FFmpeg/FFmpeg/blob/master/INSTALL.md)
-
-``` sh
-sudo apt-get -y install autoconf automake build-essential libass-dev libfreetype6-dev libsdl1.2-dev libtheora-dev libtool libva-dev libvdpau-dev libvorbis-dev libxcb1-dev libxcb-shm0-dev libxcb-xfixes0-dev pkg-config texi2html zlib1g-dev
-
-sudo apt install -y libavdevice-dev libavfilter-dev libswscale-dev libavcodec-dev libavformat-dev libswresample-dev libavutil-dev
-
-sudo apt-get install yasm
-
-export FFMPEG_ROOT=$HOME/ffmpeg
-export CGO_LDFLAGS="-L$FFMPEG_ROOT/lib/ -lavcodec -lavformat -lavutil -lswscale -lswresample -lavdevice -lavfilter"
-export CGO_CFLAGS="-I$FFMPEG_ROOT/include"
-export LD_LIBRARY_PATH=$HOME/ffmpeg/lib
-``` 
-
-``` 
-go get github.com/giorgisio/goav
-
-``` 
-
-## More Examples
-
-Coding examples are available in the examples/ directory.
 
 ## Note
 - Function names in Go are consistent with that of the libraries to help with easy search

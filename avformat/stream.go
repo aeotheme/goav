@@ -7,41 +7,48 @@ package avformat
 //#include <libavformat/avformat.h>
 import "C"
 import (
-	"github.com/giorgisio/goav/avcodec"
+	"github.com/aeotheme/goav/avcodec"
+	"github.com/aeotheme/goav/avutil"
+	"unsafe"
 )
 
-//Rational av_stream_get_r_frame_rate (const Stream *s)
-func (s *Stream) AvStreamGetRFrameRate() avcodec.Rational {
-	return newRational(C.av_stream_get_r_frame_rate((*C.struct_AVStream)(s)))
-}
-
-//void av_stream_set_r_frame_rate (Stream *s, Rational r)
-func (s *Stream) AvStreamSetRFrameRate(r avcodec.Rational) {
-	rat := C.struct_AVRational{
-		num: C.int(r.Num()),
-		den: C.int(r.Den()),
-	}
-
-	C.av_stream_set_r_frame_rate((*C.struct_AVStream)(s), rat)
-}
-
 //struct CodecParserContext * av_stream_get_parser (const Stream *s)
-func (s *Stream) AvStreamGetParser() *CodecParserContext {
-	return (*CodecParserContext)(C.av_stream_get_parser((*C.struct_AVStream)(s)))
+func (avs *Stream) AvStreamGetParser() *CodecParserContext {
+	return (*CodecParserContext)(C.av_stream_get_parser((*C.struct_AVStream)(avs)))
 }
-
-// //char * av_stream_get_recommended_encoder_configuration (const Stream *s)
-// func (s *Stream) AvStreamGetRecommendedEncoderConfiguration() string {
-// 	return C.GoString(C.av_stream_get_recommended_encoder_configuration((*C.struct_AVStream)(s)))
-// }
-
-// //void av_stream_set_recommended_encoder_configuration (Stream *s, char *configuration)
-// func (s *Stream) AvStreamSetRecommendedEncoderConfiguration( c string) {
-// 	C.av_stream_set_recommended_encoder_configuration((*C.struct_AVStream)(s), C.CString(c))
-// }
 
 //int64_t av_stream_get_end_pts (const Stream *st)
 //Returns the pts of the last muxed packet + its duration.
-func (s *Stream) AvStreamGetEndPts() int64 {
-	return int64(C.av_stream_get_end_pts((*C.struct_AVStream)(s)))
+func (avs *Stream) AvStreamGetEndPts() int64 {
+	return int64(C.av_stream_get_end_pts((*C.struct_AVStream)(avs)))
+}
+
+//Get side information from stream.
+func (avs *Stream) AvStreamGetSideData(t AvPacketSideDataType, z int) *uint8 {
+	return (*uint8)(C.av_stream_get_side_data((*C.struct_AVStream)(avs), (C.enum_AVPacketSideDataType)(t), (*C.int)(unsafe.Pointer(&z))))
+}
+
+func (avs *Stream) Free() {
+	C.av_freep(unsafe.Pointer(avs))
+}
+
+func (avs *Stream) RFrameRate() avutil.Rational {
+	return newRational(avs.r_frame_rate)
+}
+
+func (avs *Stream) SampleAspectRatio() avutil.Rational {
+	return newRational(avs.sample_aspect_ratio)
+}
+
+func (avs *Stream) TimeBase() avutil.Rational {
+	return newRational(avs.time_base)
+}
+
+func (avs *Stream) AvgFrameRate() avutil.Rational {
+	return newRational(avs.avg_frame_rate)
+}
+
+func (avs *Stream) AttachedPic() avcodec.Packet {
+	return *fromCPacket(&avs.attached_pic)
+	//return *(*avcodec.Packet)(unsafe.Pointer(&avs.attached_pic))
 }

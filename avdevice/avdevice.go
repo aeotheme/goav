@@ -30,7 +30,7 @@ type (
 )
 
 //unsigned 	avdevice_version (void)
-func AvdeviceVersion() uint {
+func Version() uint {
 	return uint(C.avdevice_version())
 }
 

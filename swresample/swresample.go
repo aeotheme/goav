@@ -29,7 +29,7 @@ func SwrAlloc() *Context {
 }
 
 //Configuration accessors
-func SwresampleVersion() uint {
+func Version() uint {
 	return uint(C.swresample_version())
 }
 

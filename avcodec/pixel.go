@@ -19,6 +19,7 @@ import "C"
 
 const (
 	AV_PIX_FMT_YUV        = 0
+	AV_PIX_FMT_YUV420P    = C.AV_PIX_FMT_YUV420P
 	AV_PIX_FMT_YUV420P9   = C.AV_PIX_FMT_YUV420P9
 	AV_PIX_FMT_YUV422P9   = C.AV_PIX_FMT_YUV422P9
 	AV_PIX_FMT_YUV444P9   = C.AV_PIX_FMT_YUV444P9
@@ -82,6 +83,9 @@ const (
 
 func (pf PixelFormat) String() string {
 	switch int(pf) {
+	case AV_PIX_FMT_YUV420P:
+		return "YUV420P"
+
 	case AV_PIX_FMT_YUV420P9:
 		return "YUV420P9"
 

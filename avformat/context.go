@@ -7,11 +7,10 @@ package avformat
 //#include <libavformat/avformat.h>
 import "C"
 import (
+	"github.com/aeotheme/goav/avcodec"
+	"github.com/aeotheme/goav/avutil"
 	"time"
 	"unsafe"
-
-	"github.com/giorgisio/goav/avcodec"
-	"github.com/giorgisio/goav/avutil"
 )
 
 const (
@@ -20,50 +19,6 @@ const (
 	AvseekFlagAny      = 4 ///< seek to any frame, even non-keyframes
 	AvseekFlagFrame    = 8 ///< seeking based on frame number
 )
-
-func (s *Context) AvFormatGetProbeScore() int {
-	return int(C.av_format_get_probe_score((*C.struct_AVFormatContext)(s)))
-}
-
-func (s *Context) AvFormatGetVideoCodec() *AvCodec {
-	return (*AvCodec)(C.av_format_get_video_codec((*C.struct_AVFormatContext)(s)))
-}
-
-func (s *Context) AvFormatSetVideoCodec(c *AvCodec) {
-	C.av_format_set_video_codec((*C.struct_AVFormatContext)(s), (*C.struct_AVCodec)(c))
-}
-
-func (s *Context) AvFormatGetAudioCodec() *AvCodec {
-	return (*AvCodec)(C.av_format_get_audio_codec((*C.struct_AVFormatContext)(s)))
-}
-
-func (s *Context) AvFormatSetAudioCodec(c *AvCodec) {
-	C.av_format_set_audio_codec((*C.struct_AVFormatContext)(s), (*C.struct_AVCodec)(c))
-}
-
-func (s *Context) AvFormatGetSubtitleCodec() *AvCodec {
-	return (*AvCodec)(C.av_format_get_subtitle_codec((*C.struct_AVFormatContext)(s)))
-}
-
-func (s *Context) AvFormatSetSubtitleCodec(c *AvCodec) {
-	C.av_format_set_subtitle_codec((*C.struct_AVFormatContext)(s), (*C.struct_AVCodec)(c))
-}
-
-func (s *Context) AvFormatGetMetadataHeaderPadding() int {
-	return int(C.av_format_get_metadata_header_padding((*C.struct_AVFormatContext)(s)))
-}
-
-func (s *Context) AvFormatSetMetadataHeaderPadding(c int) {
-	C.av_format_set_metadata_header_padding((*C.struct_AVFormatContext)(s), C.int(c))
-}
-
-func (s *Context) AvFormatGetOpaque() {
-	C.av_format_get_opaque((*C.struct_AVFormatContext)(s))
-}
-
-func (s *Context) AvFormatSetOpaque(o int) {
-	C.av_format_set_opaque((*C.struct_AVFormatContext)(s), unsafe.Pointer(&o))
-}
 
 //This function will cause global side data to be injected in the next packet of each stream as well as after any subsequent seek.
 func (s *Context) AvFormatInjectGlobalSideData() {
@@ -76,7 +31,7 @@ func (s *Context) AvFmtCtxGetDurationEstimationMethod() AvDurationEstimationMeth
 }
 
 //Free an Context and all its streams.
-func (s *Context) AvformatFreeContext() {
+func (s *Context) AvFormatFreeContext() {
 	C.avformat_free_context((*C.struct_AVFormatContext)(s))
 }
 
@@ -90,7 +45,7 @@ func (s *Context) AvNewProgram(id int) *AvProgram {
 }
 
 //Read packets of a media file to get stream information.
-func (s *Context) AvformatFindStreamInfo(d **avutil.Dictionary) int {
+func (s *Context) AvformatFindStreamInfo(d **Dictionary) int {
 	return int(C.avformat_find_stream_info((*C.struct_AVFormatContext)(s), (**C.struct_AVDictionary)(unsafe.Pointer(d))))
 }
 
@@ -116,7 +71,7 @@ func (s *Context) AvSeekFrame(st int, t int64, f int) int {
 
 // AvSeekFrameTime seeks to a specified time location.
 // |timebase| is codec specific and can be obtained by calling AvCodecGetPktTimebase2
-func (s *Context) AvSeekFrameTime(st int, at time.Duration, timebase avcodec.Rational) int {
+func (s *Context) AvSeekFrameTime(st int, at time.Duration, timebase avutil.Rational) int {
 	t2 := C.double(C.double(at.Seconds())*C.double(timebase.Den())) / (C.double(timebase.Num()))
 	// log.Printf("Seeking to time :%v TimebaseTime:%v ActualTimebase:%v", at, t2, timebase)
 	return int(C.av_seek_frame((*C.struct_AVFormatContext)(s), C.int(st), C.int64_t(t2), AvseekFlagBackward))
@@ -143,7 +98,7 @@ func (s *Context) AvformatCloseInput() {
 }
 
 //Allocate the stream private data and write the stream header to an output media file.
-func (s *Context) AvformatWriteHeader(o **avutil.Dictionary) int {
+func (s *Context) AvformatWriteHeader(o **Dictionary) int {
 	return int(C.avformat_write_header((*C.struct_AVFormatContext)(s), (**C.struct_AVDictionary)(unsafe.Pointer(o))))
 }
 
@@ -187,23 +142,27 @@ func (s *Context) AvFindDefaultStreamIndex() int {
 }
 
 //Print detailed information about the input or output format, such as duration, bitrate, streams, container, programs, metadata, side data, codec and time base.
-func (s *Context) AvDumpFormat(i int, url string, io int) {
-	Curl := C.CString(url)
-	defer C.free(unsafe.Pointer(Curl))
-
-	C.av_dump_format((*C.struct_AVFormatContext)(unsafe.Pointer(s)), C.int(i), Curl, C.int(io))
+func (s *Context) AvDumpFormat(i int, url string, isOut bool) {
+	var io int
+	if isOut {
+		io = 1
+	} else {
+		io = 0
+	}
+	C.av_dump_format((*C.struct_AVFormatContext)(unsafe.Pointer(s)), C.int(i), C.CString(url), C.int(io))
 }
 
 //Guess the sample aspect ratio of a frame, based on both the stream and the frame aspect ratio.
-func (s *Context) AvGuessSampleAspectRatio(st *Stream, fr *Frame) avcodec.Rational {
+func (s *Context) AvGuessSampleAspectRatio(st *Stream, fr *Frame) avutil.Rational {
 	return newRational(C.av_guess_sample_aspect_ratio((*C.struct_AVFormatContext)(s), (*C.struct_AVStream)(st), (*C.struct_AVFrame)(fr)))
 }
 
 //Guess the frame rate, based on both the container and codec information.
-func (s *Context) AvGuessFrameRate(st *Stream, fr *Frame) avcodec.Rational {
+func (s *Context) AvGuessFrameRate(st *Stream, fr *Frame) avutil.Rational {
 	return newRational(C.av_guess_frame_rate((*C.struct_AVFormatContext)(s), (*C.struct_AVStream)(st), (*C.struct_AVFrame)(fr)))
 }
 
+//TODO: confirm it
 //Check if the stream st contained in s is matched by the stream specifier spec.
 func (s *Context) AvformatMatchStreamSpecifier(st *Stream, spec string) int {
 	Cspec := C.CString(spec)

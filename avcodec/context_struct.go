@@ -3,546 +3,548 @@
 
 package avcodec
 
-func (ctxt *Context) ActiveThreadType() int {
-	return int(ctxt.active_thread_type)
+import "github.com/aeotheme/goav/swscale"
+
+func (ctx *Context) ActiveThreadType() int {
+	return int(ctx.active_thread_type)
 }
 
-func (ctxt *Context) BFrameStrategy() int {
-	return int(ctxt.b_frame_strategy)
+func (ctx *Context) BFrameStrategy() int {
+	return int(ctx.b_frame_strategy)
 }
 
-func (ctxt *Context) BQuantFactor() float64 {
-	return float64(ctxt.b_quant_factor)
+func (ctx *Context) BQuantFactor() float64 {
+	return float64(ctx.b_quant_factor)
 }
 
-func (ctxt *Context) BQuantOffset() float64 {
-	return float64(ctxt.b_quant_offset)
+func (ctx *Context) BQuantOffset() float64 {
+	return float64(ctx.b_quant_offset)
 }
 
-func (ctxt *Context) BSensitivity() int {
-	return int(ctxt.b_sensitivity)
+func (ctx *Context) BSensitivity() int {
+	return int(ctx.b_sensitivity)
 }
 
-func (ctxt *Context) BidirRefine() int {
-	return int(ctxt.bidir_refine)
+func (ctx *Context) BidirRefine() int {
+	return int(ctx.bidir_refine)
 }
 
-func (ctxt *Context) BitRate() int {
-	return int(ctxt.bit_rate)
+func (ctx *Context) BitRate() int {
+	return int(ctx.bit_rate)
 }
 
-func (ctxt *Context) BitRateTolerance() int {
-	return int(ctxt.bit_rate_tolerance)
+func (ctx *Context) BitRateTolerance() int {
+	return int(ctx.bit_rate_tolerance)
 }
 
-func (ctxt *Context) BitsPerCodedSample() int {
-	return int(ctxt.bits_per_coded_sample)
+func (ctx *Context) BitsPerCodedSample() int {
+	return int(ctx.bits_per_coded_sample)
 }
 
-func (ctxt *Context) BitsPerRawSample() int {
-	return int(ctxt.bits_per_raw_sample)
+func (ctx *Context) BitsPerRawSample() int {
+	return int(ctx.bits_per_raw_sample)
 }
 
-func (ctxt *Context) BlockAlign() int {
-	return int(ctxt.block_align)
+func (ctx *Context) BlockAlign() int {
+	return int(ctx.block_align)
 }
 
-func (ctxt *Context) BrdScale() int {
-	return int(ctxt.brd_scale)
+func (ctx *Context) BrdScale() int {
+	return int(ctx.brd_scale)
 }
 
-func (ctxt *Context) Channels() int {
-	return int(ctxt.channels)
+func (ctx *Context) Channels() int {
+	return int(ctx.channels)
 }
 
-func (ctxt *Context) Chromaoffset() int {
-	return int(ctxt.chromaoffset)
+func (ctx *Context) Chromaoffset() int {
+	return int(ctx.chromaoffset)
 }
 
-func (ctxt *Context) CodedHeight() int {
-	return int(ctxt.coded_height)
+func (ctx *Context) CodedHeight() int {
+	return int(ctx.coded_height)
 }
 
-func (ctxt *Context) CodedWidth() int {
-	return int(ctxt.coded_width)
+func (ctx *Context) CodedWidth() int {
+	return int(ctx.coded_width)
 }
 
-func (ctxt *Context) CoderType() int {
-	return int(ctxt.coder_type)
+func (ctx *Context) CoderType() int {
+	return int(ctx.coder_type)
 }
 
-func (ctxt *Context) CompressionLevel() int {
-	return int(ctxt.compression_level)
+func (ctx *Context) CompressionLevel() int {
+	return int(ctx.compression_level)
 }
 
-func (ctxt *Context) ContextModel() int {
-	return int(ctxt.context_model)
+func (ctx *Context) ContextModel() int {
+	return int(ctx.context_model)
 }
 
-func (ctxt *Context) Cutoff() int {
-	return int(ctxt.cutoff)
+func (ctx *Context) Cutoff() int {
+	return int(ctx.cutoff)
 }
 
-func (ctxt *Context) DarkMasking() float64 {
-	return float64(ctxt.dark_masking)
+func (ctx *Context) DarkMasking() float64 {
+	return float64(ctx.dark_masking)
 }
 
-func (ctxt *Context) DctAlgo() int {
-	return int(ctxt.dct_algo)
+func (ctx *Context) DctAlgo() int {
+	return int(ctx.dct_algo)
 }
 
-func (ctxt *Context) Debug() int {
-	return int(ctxt.debug)
+func (ctx *Context) Debug() int {
+	return int(ctx.debug)
 }
 
-func (ctxt *Context) DebugMv() int {
-	return int(ctxt.debug_mv)
+func (ctx *Context) DebugMv() int {
+	return int(ctx.debug_mv)
 }
 
-func (ctxt *Context) Delay() int {
-	return int(ctxt.delay)
+func (ctx *Context) Delay() int {
+	return int(ctx.delay)
 }
 
-func (ctxt *Context) DiaSize() int {
-	return int(ctxt.dia_size)
+func (ctx *Context) DiaSize() int {
+	return int(ctx.dia_size)
 }
 
-func (ctxt *Context) ErrRecognition() int {
-	return int(ctxt.err_recognition)
+func (ctx *Context) ErrRecognition() int {
+	return int(ctx.err_recognition)
 }
 
-func (ctxt *Context) ErrorConcealment() int {
-	return int(ctxt.error_concealment)
+func (ctx *Context) ErrorConcealment() int {
+	return int(ctx.error_concealment)
 }
 
-func (ctxt *Context) ExtradataSize() int {
-	return int(ctxt.extradata_size)
+func (ctx *Context) ExtradataSize() int {
+	return int(ctx.extradata_size)
 }
 
-func (ctxt *Context) Flags() int {
-	return int(ctxt.flags)
+func (ctx *Context) Flags() int {
+	return int(ctx.flags)
 }
 
-func (ctxt *Context) Flags2() int {
-	return int(ctxt.flags2)
+func (ctx *Context) Flags2() int {
+	return int(ctx.flags2)
 }
 
-func (ctxt *Context) FrameBits() int {
-	return int(ctxt.frame_bits)
+func (ctx *Context) FrameBits() int {
+	return int(ctx.frame_bits)
 }
 
-func (ctxt *Context) FrameNumber() int {
-	return int(ctxt.frame_number)
+func (ctx *Context) FrameNumber() int {
+	return int(ctx.frame_number)
 }
 
-func (ctxt *Context) FrameSize() int {
-	return int(ctxt.frame_size)
+func (ctx *Context) FrameSize() int {
+	return int(ctx.frame_size)
 }
 
-func (ctxt *Context) FrameSkipCmp() int {
-	return int(ctxt.frame_skip_cmp)
+func (ctx *Context) FrameSkipCmp() int {
+	return int(ctx.frame_skip_cmp)
 }
 
-func (ctxt *Context) FrameSkipExp() int {
-	return int(ctxt.frame_skip_exp)
+func (ctx *Context) FrameSkipExp() int {
+	return int(ctx.frame_skip_exp)
 }
 
-func (ctxt *Context) FrameSkipFactor() int {
-	return int(ctxt.frame_skip_factor)
+func (ctx *Context) FrameSkipFactor() int {
+	return int(ctx.frame_skip_factor)
 }
 
-func (ctxt *Context) FrameSkipThreshold() int {
-	return int(ctxt.frame_skip_threshold)
+func (ctx *Context) FrameSkipThreshold() int {
+	return int(ctx.frame_skip_threshold)
 }
 
-func (ctxt *Context) GlobalQuality() int {
-	return int(ctxt.global_quality)
+func (ctx *Context) GlobalQuality() int {
+	return int(ctx.global_quality)
 }
 
-func (ctxt *Context) GopSize() int {
-	return int(ctxt.gop_size)
+func (ctx *Context) GopSize() int {
+	return int(ctx.gop_size)
 }
 
-func (ctxt *Context) HasBFrames() int {
-	return int(ctxt.has_b_frames)
+func (ctx *Context) HasBFrames() int {
+	return int(ctx.has_b_frames)
 }
 
-func (ctxt *Context) HeaderBits() int {
-	return int(ctxt.header_bits)
+func (ctx *Context) HeaderBits() int {
+	return int(ctx.header_bits)
 }
 
-func (ctxt *Context) Height() int {
-	return int(ctxt.height)
+func (ctx *Context) Height() int {
+	return int(ctx.height)
 }
 
-func (ctxt *Context) ICount() int {
-	return int(ctxt.i_count)
+func (ctx *Context) ICount() int {
+	return int(ctx.i_count)
 }
 
-func (ctxt *Context) IQuantFactor() float64 {
-	return float64(ctxt.i_quant_factor)
+func (ctx *Context) IQuantFactor() float64 {
+	return float64(ctx.i_quant_factor)
 }
 
-func (ctxt *Context) IQuantOffset() float64 {
-	return float64(ctxt.i_quant_offset)
+func (ctx *Context) IQuantOffset() float64 {
+	return float64(ctx.i_quant_offset)
 }
 
-func (ctxt *Context) ITexBits() int {
-	return int(ctxt.i_tex_bits)
+func (ctx *Context) ITexBits() int {
+	return int(ctx.i_tex_bits)
 }
 
-func (ctxt *Context) IdctAlgo() int {
-	return int(ctxt.idct_algo)
+func (ctx *Context) IdctAlgo() int {
+	return int(ctx.idct_algo)
 }
 
-func (ctxt *Context) IldctCmp() int {
-	return int(ctxt.ildct_cmp)
+func (ctx *Context) IldctCmp() int {
+	return int(ctx.ildct_cmp)
 }
 
-func (ctxt *Context) IntraDcPrecision() int {
-	return int(ctxt.intra_dc_precision)
+func (ctx *Context) IntraDcPrecision() int {
+	return int(ctx.intra_dc_precision)
 }
 
-func (ctxt *Context) KeyintMin() int {
-	return int(ctxt.keyint_min)
+func (ctx *Context) KeyintMin() int {
+	return int(ctx.keyint_min)
 }
 
-func (ctxt *Context) LastPredictorCount() int {
-	return int(ctxt.last_predictor_count)
+func (ctx *Context) LastPredictorCount() int {
+	return int(ctx.last_predictor_count)
 }
 
-func (ctxt *Context) Level() int {
-	return int(ctxt.level)
+func (ctx *Context) Level() int {
+	return int(ctx.level)
 }
 
-func (ctxt *Context) LogLevelOffset() int {
-	return int(ctxt.log_level_offset)
+func (ctx *Context) LogLevelOffset() int {
+	return int(ctx.log_level_offset)
 }
 
-func (ctxt *Context) Lowres() int {
-	return int(ctxt.lowres)
+func (ctx *Context) Lowres() int {
+	return int(ctx.lowres)
 }
 
-func (ctxt *Context) LumiMasking() float64 {
-	return float64(ctxt.lumi_masking)
+func (ctx *Context) LumiMasking() float64 {
+	return float64(ctx.lumi_masking)
 }
 
-func (ctxt *Context) MaxBFrames() int {
-	return int(ctxt.max_b_frames)
+func (ctx *Context) MaxBFrames() int {
+	return int(ctx.max_b_frames)
 }
 
-func (ctxt *Context) MaxPredictionOrder() int {
-	return int(ctxt.max_prediction_order)
+func (ctx *Context) MaxPredictionOrder() int {
+	return int(ctx.max_prediction_order)
 }
 
-func (ctxt *Context) MaxQdiff() int {
-	return int(ctxt.max_qdiff)
+func (ctx *Context) MaxQdiff() int {
+	return int(ctx.max_qdiff)
 }
 
-func (ctxt *Context) MbCmp() int {
-	return int(ctxt.mb_cmp)
+func (ctx *Context) MbCmp() int {
+	return int(ctx.mb_cmp)
 }
 
-func (ctxt *Context) MbDecision() int {
-	return int(ctxt.mb_decision)
+func (ctx *Context) MbDecision() int {
+	return int(ctx.mb_decision)
 }
 
-func (ctxt *Context) MbLmax() int {
-	return int(ctxt.mb_lmax)
+func (ctx *Context) MbLmax() int {
+	return int(ctx.mb_lmax)
 }
 
-func (ctxt *Context) MbLmin() int {
-	return int(ctxt.mb_lmin)
+func (ctx *Context) MbLmin() int {
+	return int(ctx.mb_lmin)
 }
 
-func (ctxt *Context) MeCmp() int {
-	return int(ctxt.me_cmp)
+func (ctx *Context) MeCmp() int {
+	return int(ctx.me_cmp)
 }
 
-func (ctxt *Context) MePenaltyCompensation() int {
-	return int(ctxt.me_penalty_compensation)
+func (ctx *Context) MePenaltyCompensation() int {
+	return int(ctx.me_penalty_compensation)
 }
 
-func (ctxt *Context) MePreCmp() int {
-	return int(ctxt.me_pre_cmp)
+func (ctx *Context) MePreCmp() int {
+	return int(ctx.me_pre_cmp)
 }
 
-func (ctxt *Context) MeRange() int {
-	return int(ctxt.me_range)
+func (ctx *Context) MeRange() int {
+	return int(ctx.me_range)
 }
 
-func (ctxt *Context) MeSubCmp() int {
-	return int(ctxt.me_sub_cmp)
+func (ctx *Context) MeSubCmp() int {
+	return int(ctx.me_sub_cmp)
 }
 
-func (ctxt *Context) MeSubpelQuality() int {
-	return int(ctxt.me_subpel_quality)
+func (ctx *Context) MeSubpelQuality() int {
+	return int(ctx.me_subpel_quality)
 }
 
-func (ctxt *Context) MinPredictionOrder() int {
-	return int(ctxt.min_prediction_order)
+func (ctx *Context) MinPredictionOrder() int {
+	return int(ctx.min_prediction_order)
 }
 
-func (ctxt *Context) MiscBits() int {
-	return int(ctxt.misc_bits)
+func (ctx *Context) MiscBits() int {
+	return int(ctx.misc_bits)
 }
 
-func (ctxt *Context) MpegQuant() int {
-	return int(ctxt.mpeg_quant)
+func (ctx *Context) MpegQuant() int {
+	return int(ctx.mpeg_quant)
 }
 
-func (ctxt *Context) Mv0Threshold() int {
-	return int(ctxt.mv0_threshold)
+func (ctx *Context) Mv0Threshold() int {
+	return int(ctx.mv0_threshold)
 }
 
-func (ctxt *Context) MvBits() int {
-	return int(ctxt.mv_bits)
+func (ctx *Context) MvBits() int {
+	return int(ctx.mv_bits)
 }
 
-func (ctxt *Context) NoiseReduction() int {
-	return int(ctxt.noise_reduction)
+func (ctx *Context) NoiseReduction() int {
+	return int(ctx.noise_reduction)
 }
 
-func (ctxt *Context) NsseWeight() int {
-	return int(ctxt.nsse_weight)
+func (ctx *Context) NsseWeight() int {
+	return int(ctx.nsse_weight)
 }
 
-func (ctxt *Context) PCount() int {
-	return int(ctxt.p_count)
+func (ctx *Context) PCount() int {
+	return int(ctx.p_count)
 }
 
-func (ctxt *Context) PMasking() float64 {
-	return float64(ctxt.p_masking)
+func (ctx *Context) PMasking() float64 {
+	return float64(ctx.p_masking)
 }
 
-func (ctxt *Context) PTexBits() int {
-	return int(ctxt.p_tex_bits)
+func (ctx *Context) PTexBits() int {
+	return int(ctx.p_tex_bits)
 }
 
-func (ctxt *Context) PreDiaSize() int {
-	return int(ctxt.pre_dia_size)
+func (ctx *Context) PreDiaSize() int {
+	return int(ctx.pre_dia_size)
 }
 
-func (ctxt *Context) PreMe() int {
-	return int(ctxt.pre_me)
+func (ctx *Context) PreMe() int {
+	return int(ctx.pre_me)
 }
 
-func (ctxt *Context) PredictionMethod() int {
-	return int(ctxt.prediction_method)
+func (ctx *Context) PredictionMethod() int {
+	return int(ctx.prediction_method)
 }
 
-func (ctxt *Context) Profile() int {
-	return int(ctxt.profile)
+func (ctx *Context) Profile() int {
+	return int(ctx.profile)
 }
 
-func (ctxt *Context) Qblur() float64 {
-	return float64(ctxt.qblur)
+func (ctx *Context) Qblur() float64 {
+	return float64(ctx.qblur)
 }
 
-func (ctxt *Context) Qcompress() float64 {
-	return float64(ctxt.qcompress)
+func (ctx *Context) Qcompress() float64 {
+	return float64(ctx.qcompress)
 }
 
-func (ctxt *Context) Qmax() int {
-	return int(ctxt.qmax)
+func (ctx *Context) Qmax() int {
+	return int(ctx.qmax)
 }
 
-func (ctxt *Context) Qmin() int {
-	return int(ctxt.qmin)
+func (ctx *Context) Qmin() int {
+	return int(ctx.qmin)
 }
 
-func (ctxt *Context) RcBufferSize() int {
-	return int(ctxt.rc_buffer_size)
+func (ctx *Context) RcBufferSize() int {
+	return int(ctx.rc_buffer_size)
 }
 
-func (ctxt *Context) RcInitialBufferOccupancy() int {
-	return int(ctxt.rc_initial_buffer_occupancy)
+func (ctx *Context) RcInitialBufferOccupancy() int {
+	return int(ctx.rc_initial_buffer_occupancy)
 }
 
-func (ctxt *Context) RcMaxAvailableVbvUse() float64 {
-	return float64(ctxt.rc_max_available_vbv_use)
+func (ctx *Context) RcMaxAvailableVbvUse() float64 {
+	return float64(ctx.rc_max_available_vbv_use)
 }
 
-func (ctxt *Context) RcMaxRate() int {
-	return int(ctxt.rc_max_rate)
+func (ctx *Context) RcMaxRate() int {
+	return int(ctx.rc_max_rate)
 }
 
-func (ctxt *Context) RcMinRate() int {
-	return int(ctxt.rc_min_rate)
+func (ctx *Context) RcMinRate() int {
+	return int(ctx.rc_min_rate)
 }
 
-func (ctxt *Context) RcMinVbvOverflowUse() float64 {
-	return float64(ctxt.rc_min_vbv_overflow_use)
+func (ctx *Context) RcMinVbvOverflowUse() float64 {
+	return float64(ctx.rc_min_vbv_overflow_use)
 }
 
-func (ctxt *Context) RcOverrideCount() int {
-	return int(ctxt.rc_override_count)
+func (ctx *Context) RcOverrideCount() int {
+	return int(ctx.rc_override_count)
 }
 
-func (ctxt *Context) RefcountedFrames() int {
-	return int(ctxt.refcounted_frames)
+func (ctx *Context) RefcountedFrames() int {
+	return int(ctx.refcounted_frames)
 }
 
-func (ctxt *Context) Refs() int {
-	return int(ctxt.refs)
+func (ctx *Context) Refs() int {
+	return int(ctx.refs)
 }
 
-func (ctxt *Context) RtpPayloadSize() int {
-	return int(ctxt.rtp_payload_size)
+func (ctx *Context) RtpPayloadSize() int {
+	return int(ctx.rtp_payload_size)
 }
 
-func (ctxt *Context) SampleRate() int {
-	return int(ctxt.sample_rate)
+func (ctx *Context) SampleRate() int {
+	return int(ctx.sample_rate)
 }
 
-func (ctxt *Context) ScenechangeThreshold() int {
-	return int(ctxt.scenechange_threshold)
+func (ctx *Context) ScenechangeThreshold() int {
+	return int(ctx.scenechange_threshold)
 }
 
-func (ctxt *Context) SeekPreroll() int {
-	return int(ctxt.seek_preroll)
+func (ctx *Context) SeekPreroll() int {
+	return int(ctx.seek_preroll)
 }
 
-func (ctxt *Context) SideDataOnlyPackets() int {
-	return int(ctxt.side_data_only_packets)
+func (ctx *Context) SideDataOnlyPackets() int {
+	return int(ctx.side_data_only_packets)
 }
 
-func (ctxt *Context) SkipAlpha() int {
-	return int(ctxt.skip_alpha)
+func (ctx *Context) SkipAlpha() int {
+	return int(ctx.skip_alpha)
 }
 
-func (ctxt *Context) SkipBottom() int {
-	return int(ctxt.skip_bottom)
+func (ctx *Context) SkipBottom() int {
+	return int(ctx.skip_bottom)
 }
 
-func (ctxt *Context) SkipCount() int {
-	return int(ctxt.skip_count)
+func (ctx *Context) SkipCount() int {
+	return int(ctx.skip_count)
 }
 
-func (ctxt *Context) SkipTop() int {
-	return int(ctxt.skip_top)
+func (ctx *Context) SkipTop() int {
+	return int(ctx.skip_top)
 }
 
-func (ctxt *Context) SliceCount() int {
-	return int(ctxt.slice_count)
+func (ctx *Context) SliceCount() int {
+	return int(ctx.slice_count)
 }
 
-func (ctxt *Context) SliceFlags() int {
-	return int(ctxt.slice_flags)
+func (ctx *Context) SliceFlags() int {
+	return int(ctx.slice_flags)
 }
 
-func (ctxt *Context) Slices() int {
-	return int(ctxt.slices)
+func (ctx *Context) Slices() int {
+	return int(ctx.slices)
 }
 
-func (ctxt *Context) SpatialCplxMasking() float64 {
-	return float64(ctxt.spatial_cplx_masking)
+func (ctx *Context) SpatialCplxMasking() float64 {
+	return float64(ctx.spatial_cplx_masking)
 }
 
-func (ctxt *Context) StrictStdCompliance() int {
-	return int(ctxt.strict_std_compliance)
+func (ctx *Context) StrictStdCompliance() int {
+	return int(ctx.strict_std_compliance)
 }
 
-func (ctxt *Context) SubCharencMode() int {
-	return int(ctxt.sub_charenc_mode)
+func (ctx *Context) SubCharencMode() int {
+	return int(ctx.sub_charenc_mode)
 }
 
-func (ctxt *Context) SubtitleHeaderSize() int {
-	return int(ctxt.subtitle_header_size)
+func (ctx *Context) SubtitleHeaderSize() int {
+	return int(ctx.subtitle_header_size)
 }
 
-func (ctxt *Context) TemporalCplxMasking() float64 {
-	return float64(ctxt.temporal_cplx_masking)
+func (ctx *Context) TemporalCplxMasking() float64 {
+	return float64(ctx.temporal_cplx_masking)
 }
 
-func (ctxt *Context) ThreadCount() int {
-	return int(ctxt.thread_count)
+func (ctx *Context) ThreadCount() int {
+	return int(ctx.thread_count)
 }
 
-func (ctxt *Context) ThreadSafeCallbacks() int {
-	return int(ctxt.thread_safe_callbacks)
+func (ctx *Context) ThreadSafeCallbacks() int {
+	return int(ctx.thread_safe_callbacks)
 }
 
-func (ctxt *Context) ThreadType() int {
-	return int(ctxt.thread_type)
+func (ctx *Context) ThreadType() int {
+	return int(ctx.thread_type)
 }
 
-func (ctxt *Context) TicksPerFrame() int {
-	return int(ctxt.ticks_per_frame)
+func (ctx *Context) TicksPerFrame() int {
+	return int(ctx.ticks_per_frame)
 }
 
-func (ctxt *Context) Trellis() int {
-	return int(ctxt.trellis)
+func (ctx *Context) Trellis() int {
+	return int(ctx.trellis)
 }
 
-func (ctxt *Context) Width() int {
-	return int(ctxt.width)
+func (ctx *Context) Width() int {
+	return int(ctx.width)
 }
 
-func (ctxt *Context) WorkaroundBugs() int {
-	return int(ctxt.workaround_bugs)
+func (ctx *Context) WorkaroundBugs() int {
+	return int(ctx.workaround_bugs)
 }
 
-func (ctxt *Context) AudioServiceType() AvAudioServiceType {
-	return (AvAudioServiceType)(ctxt.audio_service_type)
+func (ctx *Context) AudioServiceType() AvAudioServiceType {
+	return (AvAudioServiceType)(ctx.audio_service_type)
 }
 
-func (ctxt *Context) ChromaSampleLocation() AvChromaLocation {
-	return (AvChromaLocation)(ctxt.chroma_sample_location)
+func (ctx *Context) ChromaSampleLocation() AvChromaLocation {
+	return (AvChromaLocation)(ctx.chroma_sample_location)
 }
 
-func (ctxt *Context) CodecDescriptor() *Descriptor {
-	return (*Descriptor)(ctxt.codec_descriptor)
+func (ctx *Context) CodecDescriptor() *Descriptor {
+	return (*Descriptor)(ctx.codec_descriptor)
 }
 
-func (ctxt *Context) CodecId() CodecId {
-	return (CodecId)(ctxt.codec_id)
+func (ctx *Context) CodecId() CodecId {
+	return (CodecId)(ctx.codec_id)
 }
 
-func (ctxt *Context) CodecType() MediaType {
-	return (MediaType)(ctxt.codec_type)
+func (ctx *Context) CodecType() MediaType {
+	return (MediaType)(ctx.codec_type)
 }
 
-func (ctxt *Context) ColorPrimaries() AvColorPrimaries {
-	return (AvColorPrimaries)(ctxt.color_primaries)
+func (ctx *Context) ColorPrimaries() AvColorPrimaries {
+	return (AvColorPrimaries)(ctx.color_primaries)
 }
 
-func (ctxt *Context) ColorRange() AvColorRange {
-	return (AvColorRange)(ctxt.color_range)
+func (ctx *Context) ColorRange() AvColorRange {
+	return (AvColorRange)(ctx.color_range)
 }
 
-func (ctxt *Context) ColorTrc() AvColorTransferCharacteristic {
-	return (AvColorTransferCharacteristic)(ctxt.color_trc)
+func (ctx *Context) ColorTrc() AvColorTransferCharacteristic {
+	return (AvColorTransferCharacteristic)(ctx.color_trc)
 }
 
-func (ctxt *Context) Colorspace() AvColorSpace {
-	return (AvColorSpace)(ctxt.colorspace)
+func (ctx *Context) Colorspace() AvColorSpace {
+	return (AvColorSpace)(ctx.colorspace)
 }
 
-func (ctxt *Context) FieldOrder() AvFieldOrder {
-	return (AvFieldOrder)(ctxt.field_order)
+func (ctx *Context) FieldOrder() AvFieldOrder {
+	return (AvFieldOrder)(ctx.field_order)
 }
 
-func (ctxt *Context) PixFmt() PixelFormat {
-	return (PixelFormat)(ctxt.pix_fmt)
+func (ctx *Context) PixFmt() swscale.PixelFormat {
+	return (swscale.PixelFormat)(ctx.pix_fmt)
 }
 
-func (ctxt *Context) RequestSampleFmt() AvSampleFormat {
-	return (AvSampleFormat)(ctxt.request_sample_fmt)
+func (ctx *Context) RequestSampleFmt() AvSampleFormat {
+	return (AvSampleFormat)(ctx.request_sample_fmt)
 }
 
-func (ctxt *Context) SampleFmt() AvSampleFormat {
-	return (AvSampleFormat)(ctxt.sample_fmt)
+func (ctx *Context) SampleFmt() AvSampleFormat {
+	return (AvSampleFormat)(ctx.sample_fmt)
 }
 
-func (ctxt *Context) SkipFrame() AvDiscard {
-	return (AvDiscard)(ctxt.skip_frame)
+func (ctx *Context) SkipFrame() AvDiscard {
+	return (AvDiscard)(ctx.skip_frame)
 }
 
-func (ctxt *Context) SkipIdct() AvDiscard {
-	return (AvDiscard)(ctxt.skip_idct)
+func (ctx *Context) SkipIdct() AvDiscard {
+	return (AvDiscard)(ctx.skip_idct)
 }
 
-func (ctxt *Context) SkipLoopFilter() AvDiscard {
-	return (AvDiscard)(ctxt.skip_loop_filter)
+func (ctx *Context) SkipLoopFilter() AvDiscard {
+	return (AvDiscard)(ctx.skip_loop_filter)
 }

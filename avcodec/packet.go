@@ -3,10 +3,12 @@
 
 package avcodec
 
-//#cgo pkg-config: libavcodec
+//#cgo pkg-config: libavcodec libavutil
 //#include <libavcodec/avcodec.h>
+//#include <libavutil/avutil.h>
 import "C"
 import (
+	"github.com/aeotheme/goav/avutil"
 	"unsafe"
 )
 
@@ -44,29 +46,6 @@ func (p *Packet) AvPacketFromData(d *uint8, s int) int {
 
 }
 
-func (p *Packet) AvDupPacket() int {
-	return int(C.av_dup_packet((*C.struct_AVPacket)(p)))
-
-}
-
-//Copy packet, including contents.
-func (p *Packet) AvCopyPacket(r *Packet) int {
-	return int(C.av_copy_packet((*C.struct_AVPacket)(p), (*C.struct_AVPacket)(r)))
-
-}
-
-//Copy packet side data.
-func (p *Packet) AvCopyPacketSideData(r *Packet) int {
-	return int(C.av_copy_packet_side_data((*C.struct_AVPacket)(p), (*C.struct_AVPacket)(r)))
-
-}
-
-//Free a packet.
-func (p *Packet) AvFreePacket() {
-	C.av_free_packet((*C.struct_AVPacket)(p))
-
-}
-
 //Allocate new information of a packet.
 func (p *Packet) AvPacketNewSideData(t AvPacketSideDataType, s int) *uint8 {
 	return (*uint8)(C.av_packet_new_side_data((*C.struct_AVPacket)(p), (C.enum_AVPacketSideDataType)(t), C.int(s)))
@@ -80,16 +59,6 @@ func (p *Packet) AvPacketShrinkSideData(t AvPacketSideDataType, s int) int {
 //Get side information from packet.
 func (p *Packet) AvPacketGetSideData(t AvPacketSideDataType, s *int) *uint8 {
 	return (*uint8)(C.av_packet_get_side_data((*C.struct_AVPacket)(p), (C.enum_AVPacketSideDataType)(t), (*C.int)(unsafe.Pointer(s))))
-}
-
-//int 	av_packet_merge_side_data (Packet *pkt)
-func (p *Packet) AvPacketMergeSideData() int {
-	return int(C.av_packet_merge_side_data((*C.struct_AVPacket)(p)))
-}
-
-//int 	av_packet_split_side_data (Packet *pkt)
-func (p *Packet) AvPacketSplitSideData() int {
-	return int(C.av_packet_split_side_data((*C.struct_AVPacket)(p)))
 }
 
 //Convenience function to free all the side data stored.
@@ -118,6 +87,14 @@ func (p *Packet) AvPacketCopyProps(s *Packet) int {
 }
 
 //Convert valid timing fields (timestamps / durations) in a packet from one timebase to another.
-func (p *Packet) AvPacketRescaleTs(r, r2 Rational) {
-	C.av_packet_rescale_ts((*C.struct_AVPacket)(p), (C.struct_AVRational)(r), (C.struct_AVRational)(r2))
+func (p *Packet) AvPacketRescaleTs(src avutil.Rational, dst avutil.Rational) {
+	//C.av_packet_rescale_ts((*C.struct_AVPacket)(p), (C.struct_AVRational)(src), (C.struct_AVRational)(dst))
+
+	//cSrc := (C.struct_AVRational)(src)
+	//cDst := (C.struct_AVRational)(dst)
+	//C.av_packet_rescale_ts((*C.struct_AVPacket)(p), cSrc, cDst)
+
+	cSrc := *(*C.struct_AVRational)(unsafe.Pointer(&src))
+	cDst := *(*C.struct_AVRational)(unsafe.Pointer(&dst))
+	C.av_packet_rescale_ts((*C.struct_AVPacket)(p), cSrc, cDst)
 }

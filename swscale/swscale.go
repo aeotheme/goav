@@ -13,8 +13,10 @@ package swscale
 //#include <string.h>
 //#include <stdint.h>
 //#include <libswscale/swscale.h>
+//#include <libavutil/frame.h>
 import "C"
 import (
+	"github.com/aeotheme/goav/avutil"
 	"unsafe"
 )
 
@@ -24,10 +26,11 @@ type (
 	Vector      C.struct_SwsVector
 	Class       C.struct_AVClass
 	PixelFormat C.enum_AVPixelFormat
+	Frame       C.struct_AVFrame
 )
 
 //Return the LIBSWSCALE_VERSION_INT constant.
-func SwscaleVersion() uint {
+func Version() uint {
 	return uint(C.swscale_version())
 }
 
@@ -61,22 +64,39 @@ func SwsIssupportedendiannessconversion(p PixelFormat) int {
 }
 
 ////Scale the image slice in srcSlice and put the resulting scaled slice in the image in dst.
-func SwsScale(ctxt *Context, src *uint8, str int, y, h int, d *uint8, ds int) int {
-	cctxt := (*C.struct_SwsContext)(unsafe.Pointer(ctxt))
-	csrc := (*C.uint8_t)(unsafe.Pointer(src))
-	cstr := (*C.int)(unsafe.Pointer(&str))
-	cd := (*C.uint8_t)(unsafe.Pointer(d))
-	cds := (*C.int)(unsafe.Pointer(&ds))
-	return int(C.sws_scale(cctxt, &csrc, cstr, C.int(y), C.int(h), &cd, cds))
+func SwsScale(ctx *Context, src *uint8, srcStride int32, y, h int, dst *uint8, dstStride int32) int {
+	cCtx := (*C.struct_SwsContext)(unsafe.Pointer(ctx))
+	cSrc := (*C.uint8_t)(unsafe.Pointer(src))
+	cSrcStride := (*C.int)(unsafe.Pointer(&srcStride))
+	cDst := (*C.uint8_t)(unsafe.Pointer(dst))
+	cDstStride := (*C.int)(unsafe.Pointer(&dstStride))
+	return int(C.sws_scale(cCtx, &cSrc, cSrcStride, C.int(y), C.int(h), &cDst, cDstStride))
 }
 
 func SwsScale2(ctxt *Context, srcData [8]*uint8, srcStride [8]int32, y, h int, dstData [8]*uint8, dstStride [8]int32) int {
-	cctxt := (*C.struct_SwsContext)(unsafe.Pointer(ctxt))
-	csrc := (**C.uint8_t)(unsafe.Pointer(&srcData[0]))
-	cstr := (*C.int)(unsafe.Pointer(&srcStride[0]))
-	cd := (**C.uint8_t)(unsafe.Pointer(&dstData[0]))
-	cds := (*C.int)(unsafe.Pointer(&dstStride))
-	return int(C.sws_scale(cctxt, csrc, cstr, C.int(y), C.int(h), cd, cds))
+	cCtx := (*C.struct_SwsContext)(unsafe.Pointer(ctxt))
+	cSrc := (**C.uint8_t)(unsafe.Pointer(&srcData[0]))
+	cSrcStride := (*C.int)(unsafe.Pointer(&srcStride[0]))
+	cDst := (**C.uint8_t)(unsafe.Pointer(&dstData[0]))
+	cDstStride := (*C.int)(unsafe.Pointer(&dstStride))
+	return int(C.sws_scale(cCtx, cSrc, cSrcStride, C.int(y), C.int(h), cDst, cDstStride))
+}
+
+func SwsScale3(ctxt *Context, fSrc *avutil.Frame, y, h int, fDst *avutil.Frame) int {
+	//srcData [8]*uint8, srcStride [8]int32
+	//dstData [8]*uint8, dstStride [8]int32
+	//csrc := (**C.uint8_t)(unsafe.Pointer(&srcData[0]))
+	//cstr := (*C.int)(unsafe.Pointer(&srcStride[0]))
+	//cd := (**C.uint8_t)(unsafe.Pointer(&dstData[0]))
+	//cds := (*C.int)(unsafe.Pointer(&dstStride))
+	cSwsCtx := (*C.struct_SwsContext)(unsafe.Pointer(ctxt))
+	cfSrc := (*C.struct_AVFrame)(unsafe.Pointer(fSrc))
+	cfDst := (*C.struct_AVFrame)(unsafe.Pointer(fDst))
+	cdSrc := (**C.uint8_t)(&cfSrc.data[0])
+	cdLineSizeSrc := (*C.int)(&cfSrc.linesize[0])
+	cdDst := (**C.uint8_t)(&cfDst.data[0])
+	cdLineSizeDst := (*C.int)(&cfDst.linesize[0])
+	return int(C.sws_scale(cSwsCtx, cdSrc, cdLineSizeSrc, C.int(y), C.int(h), cdDst, cdLineSizeDst))
 }
 
 func SwsSetcolorspacedetails(ctxt *Context, it *int, sr int, t *int, dr, b, c, s int) int {

@@ -7,70 +7,54 @@ package avformat
 //#include <libavformat/avformat.h>
 import "C"
 import (
+	"github.com/aeotheme/goav/avcodec"
+	"github.com/aeotheme/goav/avutil"
 	"unsafe"
-
-	"github.com/giorgisio/goav/avcodec"
-	"github.com/giorgisio/goav/avutil"
 )
 
-func (avs *Stream) CodecParameters() *avcodec.AvCodecParameters {
-	return (*avcodec.AvCodecParameters)(unsafe.Pointer(avs.codecpar))
+func (avs *Stream) CodecParameters() *avcodec.Parameters {
+	cS := (*C.struct_AVStream)(unsafe.Pointer(avs))
+	return (*avcodec.Parameters)(unsafe.Pointer(cS.codecpar))
 }
 
-func (avs *Stream) Codec() *CodecContext {
-	return (*CodecContext)(unsafe.Pointer(avs.codec))
-}
-
-func (avs *Stream) Metadata() *avutil.Dictionary {
-	return (*avutil.Dictionary)(unsafe.Pointer(avs.metadata))
+func (avs *Stream) Metadata() *Dictionary {
+	cS := (*C.struct_AVStream)(unsafe.Pointer(avs))
+	return (*Dictionary)(unsafe.Pointer(cS.metadata))
 }
 
 func (avs *Stream) IndexEntries() *AvIndexEntry {
-	return (*AvIndexEntry)(unsafe.Pointer(avs.index_entries))
-}
-
-func (avs *Stream) AttachedPic() avcodec.Packet {
-	return *fromCPacket(&avs.attached_pic)
+	cS := (*C.struct_AVStream)(unsafe.Pointer(avs))
+	return (*AvIndexEntry)(unsafe.Pointer(cS.index_entries))
 }
 
 func (avs *Stream) SideData() *AvPacketSideData {
-	return (*AvPacketSideData)(unsafe.Pointer(avs.side_data))
+	cS := (*C.struct_AVStream)(unsafe.Pointer(avs))
+	return (*AvPacketSideData)(unsafe.Pointer(cS.side_data))
 }
 
 func (avs *Stream) ProbeData() AvProbeData {
-	return AvProbeData(avs.probe_data)
+	cS := (*C.struct_AVStream)(unsafe.Pointer(avs))
+	return *(*AvProbeData)(unsafe.Pointer(&cS.probe_data))
 }
 
-func (avs *Stream) AvgFrameRate() avcodec.Rational {
-	return newRational(avs.avg_frame_rate)
+func (avs *Stream) DisplayAspectRatio() (r avutil.Rational) {
+	cS := (*C.struct_AVStream)(unsafe.Pointer(avs))
+	return *(*avutil.Rational)(unsafe.Pointer(&cS.display_aspect_ratio))
 }
 
-// func (avs *Stream) DisplayAspectRatio() *Rational {
-// 	return (*Rational)(unsafe.Pointer(avs.display_aspect_ratio))
-// }
-
-func (avs *Stream) RFrameRate() avcodec.Rational {
-	return newRational(avs.r_frame_rate)
+func (avs *Stream) StreamInternal() *AVStreamInternal {
+	cS := (*C.struct_AVStream)(unsafe.Pointer(avs))
+	return (*AVStreamInternal)(unsafe.Pointer(cS.internal))
 }
-
-func (avs *Stream) SampleAspectRatio() avcodec.Rational {
-	return newRational(avs.sample_aspect_ratio)
-}
-
-func (avs *Stream) TimeBase() avcodec.Rational {
-	return newRational(avs.time_base)
-}
-
-// func (avs *Stream) RecommendedEncoderConfiguration() string {
-// 	return C.GoString(avs.recommended_encoder_configuration)
-// }
 
 func (avs *Stream) Discard() AvDiscard {
-	return AvDiscard(avs.discard)
+	cS := (*C.struct_AVStream)(unsafe.Pointer(avs))
+	return (AvDiscard)(cS.discard)
 }
 
 func (avs *Stream) NeedParsing() AvStreamParseType {
-	return AvStreamParseType(avs.need_parsing)
+	cS := (*C.struct_AVStream)(unsafe.Pointer(avs))
+	return (AvStreamParseType)(cS.need_parsing)
 }
 
 func (avs *Stream) CodecInfoNbFrames() int {
@@ -83,6 +67,10 @@ func (avs *Stream) Disposition() int {
 
 func (avs *Stream) EventFlags() int {
 	return int(avs.event_flags)
+}
+
+func (avs *Stream) PtsWrapBits() int {
+	return int(avs.pts_wrap_bits)
 }
 
 func (avs *Stream) Id() int {
@@ -137,6 +125,18 @@ func (avs *Stream) StreamIdentifier() int {
 	return int(avs.stream_identifier)
 }
 
+func (avs *Stream) ProgramNum() int {
+	return int(avs.program_num)
+}
+
+func (avs *Stream) PmtVersion() int {
+	return int(avs.pmt_version)
+}
+
+func (avs *Stream) PmtStreamIndex() int {
+	return int(avs.pmt_stream_idx)
+}
+
 func (avs *Stream) UpdateInitialDurationsDone() int {
 	return int(avs.update_initial_durations_done)
 }
@@ -149,9 +149,9 @@ func (avs *Stream) Duration() int64 {
 	return int64(avs.duration)
 }
 
-// func (avs *Stream) FirstDiscardSample() int64 {
-// 	return int64(avs.first_discard_sample)
-// }
+func (avs *Stream) FirstDiscardSample() int64 {
+	return int64(avs.first_discard_sample)
+}
 
 func (avs *Stream) FirstDts() int64 {
 	return int64(avs.first_dts)
@@ -165,9 +165,9 @@ func (avs *Stream) InterleaverChunkSize() int64 {
 	return int64(avs.interleaver_chunk_size)
 }
 
-// func (avs *Stream) LastDiscardSample() int64 {
-// 	return int64(avs.last_discard_sample)
-// }
+func (avs *Stream) LastDiscardSample() int64 {
+	return int64(avs.last_discard_sample)
+}
 
 func (avs *Stream) LastDtsForOrderCheck() int64 {
 	return int64(avs.last_dts_for_order_check)
@@ -197,27 +197,25 @@ func (avs *Stream) PtsWrapReference() int64 {
 	return int64(avs.pts_wrap_reference)
 }
 
-// func (avs *Stream) StartSkipSamples() int64 {
-// 	return int64(avs.start_skip_samples)
-// }
+func (avs *Stream) StartSkipSamples() int64 {
+	return int64(avs.start_skip_samples)
+}
 
 func (avs *Stream) StartTime() int64 {
 	return int64(avs.start_time)
 }
 
 func (avs *Stream) Parser() *CodecParserContext {
-	return (*CodecParserContext)(unsafe.Pointer(avs.parser))
+	cpCtx := (*C.struct_AVCodecParserContext)(unsafe.Pointer(avs.parser))
+	return (*CodecParserContext)(cpCtx)
 }
 
 func (avs *Stream) LastInPacketBuffer() *AvPacketList {
-	return (*AvPacketList)(unsafe.Pointer(avs.last_in_packet_buffer))
+	pl := (*C.struct_AVPacketList)(unsafe.Pointer(avs.last_in_packet_buffer))
+	return (*AvPacketList)(pl)
 }
 
-// func (avs *Stream) PrivPts() *FFFrac {
-// 	return (*FFFrac)(unsafe.Pointer(avs.priv_pts))
-// }
-
-func (avs *Stream) DtsMisordered() uint8 {
+func (avs *Stream) DtsMisOrdered() uint8 {
 	return uint8(avs.dts_misordered)
 }
 
@@ -233,6 +231,6 @@ func (avs *Stream) IndexEntriesAllocatedSize() uint {
 	return uint(avs.index_entries_allocated_size)
 }
 
-func (avs *Stream) Free() {
-	C.av_freep(unsafe.Pointer(avs))
+func (avs *Stream) PrivateData() uintptr {
+	return uintptr(unsafe.Pointer(avs.priv_data))
 }
